@@ -11,7 +11,12 @@ import UserProfile from "./pages/UserProfile";
 const App = () => {
   const { token, loading } = useContext(AuthContext);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-lg font-medium">Loading...</p>
+      </div>
+    );
 
   return (
     <Routes>

@@ -8,6 +8,7 @@ const Profile = () => {
   const { user, fetchProfile } = useContext(AuthContext);
   const [edit, setEdit] = useState(false);
   const [form, setForm] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,6 +36,7 @@ const Profile = () => {
 
   const saveProfile = async () => {
     try {
+      setLoading(true);
       await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/user/update-profile`,
         form,
@@ -47,7 +49,9 @@ const Profile = () => {
       toast.success("Profile updated successfully");
       setEdit(false);
       fetchProfile();
+      setLoading(false);
     } catch {
+      setLoading(false);
       toast.error("Update failed");
     }
   };
@@ -328,7 +332,7 @@ const Profile = () => {
             className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700"
             onClick={saveProfile}
           >
-            Save Profile
+            {loading ? "Saving changes" : "Save Profile"}
           </button>
         )}
       </div>

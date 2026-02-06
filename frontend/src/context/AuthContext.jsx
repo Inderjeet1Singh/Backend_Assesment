@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const [authLoading, setAuthLoading] = useState(false);
   const fetchProfile = async () => {
     if (!token) {
       setLoading(false);
@@ -37,6 +37,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
+      setAuthLoading(true);
       const res = await axios.post(`${BASE_URL}/auth/login`, {
         email,
         password,
@@ -44,13 +45,16 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("token", res.data.token);
       setToken(res.data.token);
       toast.success("Login successful");
+      setAuthLoading(false);
     } catch (err) {
+      setAuthLoading(false);
       toast.error(err.response?.data?.message || "Login failed");
     }
   };
 
   const signup = async (name, email, password) => {
     try {
+      setAuthLoading(true);
       const res = await axios.post(`${BASE_URL}/auth/signup`, {
         name,
         email,
@@ -59,7 +63,9 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("token", res.data.token);
       setToken(res.data.token);
       toast.success("Signup successful");
+      setAuthLoading(false);
     } catch (err) {
+      setAuthLoading(false);
       toast.error(err.response?.data?.message || "Signup failed");
     }
   };
@@ -80,6 +86,7 @@ export const AuthProvider = ({ children }) => {
         signup,
         logout,
         fetchProfile,
+        authLoading,
       }}
     >
       {children}

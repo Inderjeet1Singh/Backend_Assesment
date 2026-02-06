@@ -3,7 +3,7 @@ import { AuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 
 const Login = () => {
-  const { login } = useContext(AuthContext);
+  const { login, authLoading } = useContext(AuthContext);
 
   const [form, setForm] = useState({
     email: "",
@@ -41,7 +41,7 @@ const Login = () => {
           />
 
           <button className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition">
-            Login
+            {authLoading ? "Logging in.." : "Login"}
           </button>
         </form>
 
